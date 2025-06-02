@@ -10,6 +10,27 @@ function toggleSettings(e) {
 const toastQueue = [];
 let isShowingToast = false;
 
+// 主题切换相关
+function applyTheme(theme) {
+    document.documentElement.classList.toggle('light-theme', theme === 'light');
+    const icon = document.getElementById('themeIcon');
+    if (icon) icon.textContent = theme === 'light' ? '🌙' : '☀️';
+}
+
+function toggleTheme() {
+    const current = document.documentElement.classList.contains('light-theme') ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    localStorage.setItem('theme', next);
+    applyTheme(next);
+}
+
+function initTheme() {
+    const saved = localStorage.getItem('theme') || 'dark';
+    applyTheme(saved);
+}
+
+document.addEventListener('DOMContentLoaded', initTheme);
+
 function showToast(message, type = 'error') {
     // 将新的toast添加到队列
     toastQueue.push({ message, type });
